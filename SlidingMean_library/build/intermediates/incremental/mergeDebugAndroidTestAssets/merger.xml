@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="debug"><source path="/Users/xwf/Documents/Developer/Workspace/AndroidStu/Zhbj/SlidingMean_library/build/intermediates/bundles/debug/assets"/></dataSet><dataSet config="main"><source path="/Users/xwf/Documents/Developer/Workspace/AndroidStu/Zhbj/SlidingMean_library/src/androidTest/assets"/><source path="/Users/xwf/Documents/Developer/Workspace/AndroidStu/Zhbj/SlidingMean_library/build/generated/assets/shaders/androidTest/debug"/></dataSet></merger>

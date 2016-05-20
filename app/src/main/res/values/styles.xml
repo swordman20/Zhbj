@@ -1,0 +1,34 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <!--<style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">-->
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+    <!--自定义主题-->
+    <style name="NoTitleFullscreen" parent="Theme.AppCompat.Light.NoActionBar">
+            <item name="android:windowFullscreen">true</item>
+    </style>
+    <style name="MyGuideTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+
+        <item name="colorPrimary">@color/GuidePrimary</item>
+        <item name="colorPrimaryDark">@color/GuidePrimaryDark</item>
+    </style>
+
+
+
+    <style name="MyRadioButtonStyle" >
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:button">@android:color/transparent</item>
+        <item name="android:textColor">@drawable/content_rb_textcolor</item>
+        <item name="android:drawablePadding">5dp</item>
+        <item name="android:textSize">10sp</item>
+    </style>
+</resources>
