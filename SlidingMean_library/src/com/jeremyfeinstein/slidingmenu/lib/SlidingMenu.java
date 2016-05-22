@@ -24,8 +24,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.jeremyfeinstein.slidingmenu.lib.CustomViewAbove.OnPageChangeListener;
 
@@ -34,6 +36,17 @@ public class SlidingMenu extends RelativeLayout {
 	private static final String TAG = SlidingMenu.class.getSimpleName();
 
 	public static final int SLIDING_WINDOW = 0;
+
+	@Override
+	public void onInitializeAccessibilityNodeInfo(AccessibilityNodeInfo info) {
+		super.onInitializeAccessibilityNodeInfo(info);
+	}
+
+	@Override
+	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+	}
+
 	public static final int SLIDING_CONTENT = 1;
 	private boolean mActionbarOverlay = false;
 
