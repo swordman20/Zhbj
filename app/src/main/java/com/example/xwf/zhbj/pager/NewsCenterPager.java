@@ -3,6 +3,7 @@ package com.example.xwf.zhbj.pager;
 import android.app.Activity;
 import android.graphics.Color;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.TextView;
 
 import com.example.xwf.zhbj.base.BasePager;
@@ -26,6 +27,7 @@ public class NewsCenterPager extends BasePager{
         tv.setTextColor(Color.RED);
         tv.setTextSize(25);
         tv.setGravity(Gravity.CENTER);
+        mImageButtionLeftMenu.setVisibility(View.VISIBLE);
         mFrameLayoutContent.addView(tv);
     }
 }

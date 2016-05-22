@@ -2,7 +2,6 @@ package com.example.xwf.zhbj.fragment;
 
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +16,7 @@ import com.example.xwf.zhbj.pager.NewsCenterPager;
 import com.example.xwf.zhbj.pager.SettingPager;
 import com.example.xwf.zhbj.pager.SmartServicePager;
 import com.example.xwf.zhbj.pager.ZhengWuPager;
+import com.example.xwf.zhbj.view.NoSlidingViewPager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +31,7 @@ import butterknife.ButterKnife;
  */
 public class ContentFragment extends BaseFragment {
     @Bind(R.id.vp_content)
-    ViewPager mViewPagerContent;
+    NoSlidingViewPager mViewPagerContent;
     @Bind(R.id.rb_home)
     RadioButton mRadioButtonHome;
     @Bind(R.id.rb_newcenter)
@@ -44,7 +44,7 @@ public class ContentFragment extends BaseFragment {
     RadioButton mRadioButtonSetting;
     @Bind(R.id.rg_group)
     RadioGroup mRadioButtonGroup;
-    private List<BasePager> basePagerList;
+    public List<BasePager> basePagerList;
 
     @Override
     public View initView() {
@@ -63,8 +63,13 @@ public class ContentFragment extends BaseFragment {
         basePagerList.add(new ZhengWuPager(mActivity));
         basePagerList.add(new SettingPager(mActivity));
         //初始化Viewpager数据
-        MyPagerAdapter myPagerAdapter = new MyPagerAdapter();
+        MyPagerAdapter myPagerAdapter =  new MyPagerAdapter();
         mViewPagerContent.setAdapter(myPagerAdapter);
+
+        //设置RadioGroup
+        mRadioButtonGroup.setOnCheckedChangeListener(new MyOnCheckedChangeListener());
+        //设置第一个页面
+        mRadioButtonHome.setChecked(true);
     }
 
     @Override
@@ -106,6 +111,33 @@ public class ContentFragment extends BaseFragment {
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
             container.removeView((View) object);
+        }
+    }
+
+    /**
+     * radiogroup的事件监听
+     */
+    class MyOnCheckedChangeListener implements RadioGroup.OnCheckedChangeListener {
+
+        @Override
+        public void onCheckedChanged(RadioGroup group, int checkedId) {
+            switch (checkedId){
+                case R.id.rb_home:
+                    mViewPagerContent.setCurrentItem(0);
+                    break;
+                case R.id.rb_newcenter:
+                    mViewPagerContent.setCurrentItem(1);
+                    break;
+                case R.id.rb_service:
+                    mViewPagerContent.setCurrentItem(2);
+                    break;
+                case R.id.rb_zhengwu:
+                    mViewPagerContent.setCurrentItem(3);
+                    break;
+                case R.id.rb_setting:
+                    mViewPagerContent.setCurrentItem(4);
+                    break;
+            }
         }
     }
 }

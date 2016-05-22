@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 
 /**
  * Created by Hsia on 16/5/21.
@@ -29,6 +30,7 @@ public abstract class BaseFragment extends Fragment{
     //初始化View
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         View view = initView();
         return view;
     }

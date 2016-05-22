@@ -17,7 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".GuideActivity"
-            android:theme="@style/MyGuideTheme"/>
+            android:theme="@style/NoTitleFullscreen"/>
         <activity android:name=".MainActivity"/>
     </application>
 
