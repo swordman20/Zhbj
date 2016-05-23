@@ -58,7 +58,7 @@ public class SplashActivity extends AppCompatActivity {
         public void onAnimationEnd(Animation animation) {
             boolean open = CacheUtils.getSharedPreferences(getApplicationContext(), ISOPER, false);
             if (open) {
-                Log.d(TAG, "进入主界面");
+//                Log.d(TAG, "进入主界面");
                 finish();
                 startActivity(new Intent(getApplicationContext(),MainActivity.class));
             }else {

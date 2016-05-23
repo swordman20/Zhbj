@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/SlidingMean_library/SlidingMean_library.iml" filepath="$PROJECT_DIR$/SlidingMean_library/SlidingMean_library.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ViewPagerIndicator_library/ViewPagerIndicator_library.iml" filepath="$PROJECT_DIR$/ViewPagerIndicator_library/ViewPagerIndicator_library.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Viewpager_sample/Viewpager_sample.iml" filepath="$PROJECT_DIR$/Viewpager_sample/Viewpager_sample.iml" />
       <module fileurl="file://$PROJECT_DIR$/Zhbj.iml" filepath="$PROJECT_DIR$/Zhbj.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>

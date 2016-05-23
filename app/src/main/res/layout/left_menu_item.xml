@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="60dp">
+
+<TextView
+    android:id="@+id/tv_left_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="新闻"
+    android:textSize="23sp"
+    android:padding="10dp"
+    android:gravity="center"
+    android:drawableLeft="@drawable/left_menu_item_dr_bg"
+    android:enabled="false"
+    android:layout_margin="10dp"
+    android:textColor="@drawable/left_menu_item_textview_bg"/>
+</LinearLayout>

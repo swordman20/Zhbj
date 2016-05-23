@@ -30,7 +30,6 @@ public abstract class BaseFragment extends Fragment{
     //初始化View
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         View view = initView();
         return view;
     }

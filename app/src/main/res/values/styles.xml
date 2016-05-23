@@ -8,6 +8,9 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:fitsSystemWindows">true</item>
+
+        <item name="vpiIconPageIndicatorStyle">@style/Widget.IconPageIndicator</item>
+        <item name="vpiTabPageIndicatorStyle">@style/Widget.TabPageIndicator</item>
     </style>
     <!--自定义主题-->
     <style name="NoTitleFullscreen" parent="Theme.AppCompat.Light.NoActionBar">
@@ -30,4 +33,5 @@
         <item name="android:drawablePadding">5dp</item>
         <item name="android:textSize">10sp</item>
     </style>
+
 </resources>
