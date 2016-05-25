@@ -6,11 +6,14 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
+import com.example.xwf.zhbj.MainActivity;
 import com.example.xwf.zhbj.R;
 import com.example.xwf.zhbj.base.LeftMenuBasePager;
 import com.example.xwf.zhbj.bean.NewsCenterBean;
 import com.example.xwf.zhbj.pagercontent.pagercontenttab.TabPager;
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.viewpagerindicator.TabPageIndicator;
 
 import java.util.ArrayList;
@@ -18,23 +21,29 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 
 /**
  * Created by Hsia on 16/5/23.
  * E-mail: xiaweifeng@live.cn
  * //TODO:左侧菜单的新闻页面
  */
-public class NewsPager extends LeftMenuBasePager {
+public class NewsPager extends LeftMenuBasePager implements ViewPager.OnPageChangeListener {
     @Bind(R.id.pager)
     ViewPager pager;
     public final List<NewsCenterBean.NewsCenterMenu.NewsMenuTab> newsMenuTabList; //页签对应的数据
     public List<TabPager> tabPagerList; //tab的页面
     @Bind(R.id.indicator)
     TabPageIndicator indicator;
+    @Bind(R.id.ib_tab_next)
+    ImageButton ibTabNext;
+    public TopTabPagerAdapter topTabPagerAdapter;//顶部新闻对应的页签
 
 
     public NewsPager(Activity mActivity, NewsCenterBean.NewsCenterMenu newsCenterMenu) {
         super(mActivity);
+        //这个集合就是子页面对应的标签页
         newsMenuTabList = newsCenterMenu.getChildren();
     }
 
@@ -56,13 +65,43 @@ public class NewsPager extends LeftMenuBasePager {
         }
 
         Log.d(TAG, "initData: " + "新闻页面数据初始化了");
-        LeftMenuPagerAdapter leftMenuPagerAdapter = new LeftMenuPagerAdapter();
-        pager.setAdapter(leftMenuPagerAdapter);
+        topTabPagerAdapter = new TopTabPagerAdapter();
+        pager.setAdapter(topTabPagerAdapter);
         //给indicator设置数据
         indicator.setViewPager(pager);
+        //给viewpager设置滑动监听,注意事件已经被indicator占用了，所以要个indicator设置滑动监听
+//        pager.setOnPageChangeListener(this);
+        indicator.setOnPageChangeListener(this);
     }
 
-    class LeftMenuPagerAdapter extends PagerAdapter {
+    //点击button切换下一个页面
+    @OnClick(R.id.ib_tab_next)
+    public void onClick() {
+        pager.setCurrentItem(pager.getCurrentItem()+1);
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+    //如果是第一个页面，可以侧拉栏可以用，是其他页面，侧栏了不可言
+    @Override
+    public void onPageSelected(int position) {
+        //可用
+        if (position == 0){
+            ((MainActivity) mActivity).getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+            //不可用
+        }else {
+            ((MainActivity) mActivity).getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
+        }
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+
+    class TopTabPagerAdapter extends PagerAdapter {
         //给indicator设置数据
         @Override
         public CharSequence getPageTitle(int position) {

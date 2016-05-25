@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/iv_fenche"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:src="@drawable/newscenter_initview"
+        android:background="@android:color/transparent"/>
+<TextView
+    android:layout_below="@+id/iv_fenche"
+    android:layout_width="match_parent"
+    android:gravity="center_horizontal"
+    android:layout_centerHorizontal="true"
+    android:layout_height="wrap_content"
+    android:textSize="15sp"
+    android:textColor="#F34047"
+    android:text="最新资讯，正在玩命加载中……"/>
+</RelativeLayout>

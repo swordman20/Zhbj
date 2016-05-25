@@ -7,6 +7,7 @@ package com.example.xwf.zhbj.utils;
  */
 public class ConstantUtils {
     public static final String CONNECTURL = "http://hais.site88.net/zhbj";
+//    public static final String CONNECTURL = "http://10.0.2.2:8080/zhbj";
     public static final String NEWSCENTERURL = CONNECTURL+"/categories.json";
 
 }

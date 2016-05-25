@@ -1,22 +1,23 @@
 package com.example.xwf.zhbj.pagercontent;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.widget.TextView;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
+import android.widget.ImageView;
 
 import com.example.xwf.zhbj.MainActivity;
+import com.example.xwf.zhbj.R;
 import com.example.xwf.zhbj.base.BasePager;
+import com.example.xwf.zhbj.base.LeftMenuBasePager;
 import com.example.xwf.zhbj.bean.NewsCenterBean;
 import com.example.xwf.zhbj.fragment.LeftMenuFragment;
-import com.example.xwf.zhbj.base.LeftMenuBasePager;
 import com.example.xwf.zhbj.pageleftmenu.HudongPager;
 import com.example.xwf.zhbj.pageleftmenu.NewsPager;
 import com.example.xwf.zhbj.pageleftmenu.PhotosPager;
 import com.example.xwf.zhbj.pageleftmenu.ZhuanTiPager;
-import com.example.xwf.zhbj.pagercontent.pagercontenttab.TabPager;
 import com.example.xwf.zhbj.utils.CacheUtils;
 import com.example.xwf.zhbj.utils.ConstantUtils;
 import com.google.gson.Gson;
@@ -35,7 +36,6 @@ import java.util.List;
  * //TODO:主要实现新闻中心页面
  */
 public class NewsCenterPager extends BasePager{
-
     public List<LeftMenuBasePager> leftMenuBasePagerlist;
     public List<NewsCenterBean.NewsCenterMenu> leftMenuList;
 
@@ -48,15 +48,31 @@ public class NewsCenterPager extends BasePager{
         super.initData();
         Log.d(TAG, "新闻中心 加载数据了 ");
         mTextViewTitle.setText("新闻中心");
+        View defaultView = View.inflate(mActivity, R.layout.newscenterinitview, null);
+        ImageView fencheView = (ImageView) defaultView.findViewById(R.id.iv_fenche);
+        rotateImage(fencheView);
+        mFrameLayoutContent.addView(defaultView);
         mImageButtionLeftMenu.setVisibility(View.VISIBLE);
         //获取数据之前先读取缓存数据
-        String getCacheString = CacheUtils.getString(mActivity, ConstantUtils.NEWSCENTERURL, "");
+        String getCacheString = CacheUtils.getString(mActivity, ConstantUtils.NEWSCENTERURL, null);
         if (getCacheString != null) {
             resolutionJson(getCacheString);
         }
         //从网络上获取数据
         getFromDataNet();
+
+
     }
+
+    private void rotateImage(ImageView fencheView) {
+        RotateAnimation ra = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        ra.setInterpolator(new LinearInterpolator());
+        ra.setDuration(300);
+        ra.setRepeatCount(Integer.MAX_VALUE);
+        ra.setFillAfter(true);
+        fencheView.startAnimation(ra);
+    }
+
 
     private void getFromDataNet() {
         HttpUtils httpUtils = new HttpUtils();
@@ -121,6 +137,10 @@ public class NewsCenterPager extends BasePager{
         leftMenuBasePager.initData();
     }
 
+    /**
+     * 把解析结果发送给左侧侧拉栏
+     * @param leftMenuList
+     */
     private void sendLeftMenuFormlist(List<NewsCenterBean.NewsCenterMenu> leftMenuList) {
         //获取到LeftMenuFragment的对象
         MainActivity newsCenterPagerActivity = (MainActivity) this.mActivity;
