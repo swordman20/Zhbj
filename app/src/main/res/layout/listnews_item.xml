@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="3dp">
+<ImageView
+    android:id="@+id/iv_list_news"
+    android:layout_width="160dp"
+    android:background="#9e9e9e"
+    android:scaleType="fitXY"
+    android:padding="1dp"
+    android:layout_height="100dp" />
+    <TextView
+        android:id="@+id/tv_list_news"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@+id/iv_list_news"
+        android:lines="2"
+        android:textColor="#000"
+        android:text="哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈"
+        android:textSize="16sp"
+        />
+    <TextView
+        android:id="@+id/tv_list_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/iv_list_news"
+        android:layout_marginLeft="5dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:layout_below="@+id/tv_list_news"
+        android:textColor="#9e9e9e"
+        android:text="1999-09-09"/>
+<ImageView
+    android:layout_width="20dp"
+    android:layout_height="20dp"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentRight="true"
+    android:layout_marginRight="10dp"
+    android:layout_marginBottom="10dp"
+    android:src="@drawable/hot_news"
+    android:background="@android:color/transparent"/>
+</RelativeLayout>

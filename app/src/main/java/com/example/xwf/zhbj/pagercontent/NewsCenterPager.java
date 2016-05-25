@@ -64,7 +64,7 @@ public class NewsCenterPager extends BasePager{
 
     }
 
-    private void rotateImage(ImageView fencheView) {
+    public void rotateImage(ImageView fencheView) {
         RotateAnimation ra = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         ra.setInterpolator(new LinearInterpolator());
         ra.setDuration(300);
