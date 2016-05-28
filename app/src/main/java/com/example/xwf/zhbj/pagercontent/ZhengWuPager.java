@@ -26,6 +26,7 @@ public class ZhengWuPager extends BasePager {
         super.initData();
         Log.d(TAG, "政务 加载数据了 ");
         mTextViewTitle.setText("政务");
+        mImageButtionLeftMenu.setVisibility(View.VISIBLE);
         mFrameLayoutContent.removeAllViews();
         View view = new BlankPager(mActivity).blankView();
         mFrameLayoutContent.addView(view);

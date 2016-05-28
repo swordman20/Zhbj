@@ -54,16 +54,16 @@ public class HorizontalViewPager extends ViewPager {
                 if (Math.abs(diffX) > Math.abs(diffY)) {
                     //从左向右滑动，并且是第一个页面不拦截 move>0
                     if (diffX>0 && getCurrentItem()==0){
-                        Log.d("Hsia", "第一个页面");
+//                        Log.d("Hsia", "第一个页面");
                         getParent().requestDisallowInterceptTouchEvent(false);
-                        Log.d("Hsia", "最后页面");
+//                        Log.d("Hsia", "最后页面");
                         //当前是最后一个页面 并且是从右向左滑动，不拦截
                     }else if(getCurrentItem() == getAdapter().getCount()-1 && diffX<0){
                         getParent().requestDisallowInterceptTouchEvent(false);
                     }else {
                         //左右滑动其他都拦截
                         getParent().requestDisallowInterceptTouchEvent(true);
-                        Log.d("Hsia", "左右滑动");
+//                        Log.d("Hsia", "左右滑动");
                     }
                 }else {
                     //竖向滑动，上层布局可以拦截

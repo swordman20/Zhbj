@@ -52,7 +52,6 @@ public class BlankPager  {
                                     @Override
                                     public void run() {
                                         mTVHint.setVisibility(View.INVISIBLE);
-//                                        v.setBackgroundResource(R.drawable.newscenter_initview);
                                         ((ImageView) v).setImageResource(R.drawable.newscenter_initview);
                                         new NewsCenterPager(mActivity).rotateImage((ImageView) v);
                                     }

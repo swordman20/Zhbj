@@ -1,18 +1,25 @@
 package com.example.xwf.zhbj.pagercontent.pagercontenttab;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.xwf.zhbj.R;
 import com.example.xwf.zhbj.base.LeftMenuBasePager;
@@ -20,14 +27,17 @@ import com.example.xwf.zhbj.bean.NewsCenterBean;
 import com.example.xwf.zhbj.bean.TopNewsBean;
 import com.example.xwf.zhbj.utils.CacheUtils;
 import com.example.xwf.zhbj.utils.ConstantUtils;
+import com.example.xwf.zhbj.view.CustomLIstView;
 import com.example.xwf.zhbj.view.HorizontalViewPager;
 import com.google.gson.Gson;
 import com.lidroid.xutils.BitmapUtils;
 import com.lidroid.xutils.HttpUtils;
+import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.exception.HttpException;
 import com.lidroid.xutils.http.ResponseInfo;
 import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.lidroid.xutils.http.client.HttpRequest;
+import com.lidroid.xutils.view.annotation.ViewInject;
 
 import java.util.List;
 
@@ -40,14 +50,14 @@ import butterknife.ButterKnife;
  * E-mail: xiaweifeng@live.cn
  * //TODO:新闻中心页面的tab页面
  */
-public class TabPager extends LeftMenuBasePager implements ViewPager.OnPageChangeListener {
-    @Bind(R.id.hvp)
+public class TabPager extends LeftMenuBasePager implements ViewPager.OnPageChangeListener{
+    @ViewInject(R.id.hvp)
     HorizontalViewPager hvp;
     @Bind(R.id.list_news)
-    ListView listNews;
-    @Bind(R.id.tv_top_news_des)
+    CustomLIstView listNews;
+    @ViewInject(R.id.tv_top_news_des)
     TextView tvTopNewsDes;
-    @Bind(R.id.ll_point)
+    @ViewInject(R.id.ll_point)
     LinearLayout llPoint;
     private NewsCenterBean.NewsCenterMenu.NewsMenuTab newsMenuTab;//顶部新闻对应的页签
     public String url;//顶部新闻标签页的url
@@ -56,6 +66,14 @@ public class TabPager extends LeftMenuBasePager implements ViewPager.OnPageChang
     private int firstDescription; //第一个图片文字和点的描述
     public List<TopNewsBean.DataBean.NewsBean> newsItem;//listView展示的条目
     public BitmapUtils bitmapUtils;
+    public RelativeLayout inflateViewPager;
+    private boolean isRefresh = false;
+    public String moreUrl;//加载更多的url
+    public boolean isLoadMore = false;
+    public ListNewsAdapter listNewsAdapter;
+    // 已读新闻的id数组
+    private final String READABLE_NEWS_ID_ARRAY_KEY = "readable_news_id_array_key";
+    public TopNewsBean.DataBean.NewsBean newsBeanItem;
 
 
     public TabPager(Activity activity, NewsCenterBean.NewsCenterMenu.NewsMenuTab newsMenuTab) {
@@ -67,7 +85,75 @@ public class TabPager extends LeftMenuBasePager implements ViewPager.OnPageChang
     public View initView() {
         View topNewsView = View.inflate(mActivity, R.layout.top_tab_pager, null);
         ButterKnife.bind(this, topNewsView);
+        inflateViewPager = (RelativeLayout) View.inflate(mActivity, R.layout.top_news_viewpager, null);
+        ViewUtils.inject(this, inflateViewPager);
+        listNews.setSeccondHeadView(inflateViewPager);
+        listNews.setOnRefreshListener(new CustomLIstView.OnRefreshListener() {
+            @Override
+            public void onPullDownRefresh() {
+                isRefresh = true;
+                // 访问网络请求数据
+                getDataFromNet();
+            }
+            //当加载更多调用
+            @Override
+            public void onLoadingMore() {
+                if (moreUrl == null) {
+                    Toast.makeText(mActivity, "已经没有更多数据了", Toast.LENGTH_SHORT).show();
+                    listNews.onRefreshFinish(false);
+                }else {
+                    getMoreDataNet();
+                }
+            }
+        });
+
+        listNews.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                int newsposition = position - 2;
+                newsBeanItem = newsItem.get(newsposition);
+                // 先把已读新闻的id取出来
+                String readableIDArray = CacheUtils.getString(mActivity, READABLE_NEWS_ID_ARRAY_KEY, "");
+                if(!readableIDArray.contains(newsBeanItem.getId()+"")) {
+                    String currentID = null;
+                    if(TextUtils.isEmpty(readableIDArray)) {
+                        currentID = newsBeanItem.getId() + ", ";
+                    } else {
+                        currentID = readableIDArray + newsBeanItem.getId() + ", ";
+                    }
+                    // 把这条新闻的id存储起来
+                    CacheUtils.putString(mActivity, READABLE_NEWS_ID_ARRAY_KEY, currentID);
+                }
+
+                listNewsAdapter.notifyDataSetChanged();
+
+                Intent intent = new Intent(mActivity, NewsDetailUI.class);
+                intent.putExtra("url", newsBeanItem.getUrl());
+                intent.putExtra("title",newsBeanItem.getTitle());
+                mActivity.startActivity(intent);
+            }
+        });
         return topNewsView;
+    }
+
+    /**
+     * 加载更多的时候调用此方法
+     */
+    private void getMoreDataNet() {
+        HttpUtils httpUtils = new HttpUtils();
+        httpUtils.send(HttpRequest.HttpMethod.GET, moreUrl, new RequestCallBack<Object>() {
+            @Override
+            public void onSuccess(ResponseInfo<Object> responseInfo) {
+                isLoadMore = true;
+                //解析json
+                resolutionJson((String) responseInfo.result);
+            }
+
+            @Override
+            public void onFailure(HttpException e, String s) {
+                Toast.makeText(mActivity, "请求网络失败", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -90,6 +176,12 @@ public class TabPager extends LeftMenuBasePager implements ViewPager.OnPageChang
         httpUtils.send(HttpRequest.HttpMethod.GET, url, new RequestCallBack<Object>() {
             @Override
             public void onSuccess(ResponseInfo<Object> responseInfo) {
+
+                if (isRefresh) {
+                    isRefresh = false;
+                    listNews.onRefreshFinish(true);
+                }
+
                 Log.d(TAG, newsMenuTab.getTitle() + "数据请求成功" + responseInfo.result);
                 //数据请求成功向本地保存一份
                 CacheUtils.putString(mActivity, url, String.valueOf(responseInfo.result));
@@ -99,6 +191,9 @@ public class TabPager extends LeftMenuBasePager implements ViewPager.OnPageChang
 
             @Override
             public void onFailure(HttpException e, String s) {
+                if (isRefresh) {
+                    listNews.onRefreshFinish(false);
+                }
                 Log.d(TAG, newsMenuTab.getTitle() + "数据请求失败");
             }
         });
@@ -110,42 +205,56 @@ public class TabPager extends LeftMenuBasePager implements ViewPager.OnPageChang
      * @param result
      */
     private void resolutionJson(String result) {
-        //把解析json封装成一个方法这样看起来代码没那么乱
         TopNewsBean topNewsBean = topNewsJson(result);
-        topNewsList = topNewsBean.getData().getTopnews();
-        //初始化顶部新闻的Viewpager数据
+        if (!isLoadMore){
+            //把解析json封装成一个方法这样看起来代码没那么乱
+            topNewsList = topNewsBean.getData().getTopnews();
 
-        //初始化Viewpager数据
-        TopNewsTabAdapter topNewsTabAdapter = new TopNewsTabAdapter();
-//        给ViewPager设置数据
-        hvp.setAdapter(topNewsTabAdapter);
-        hvp.setOnPageChangeListener(this);
-
-        //初始化文字和点
-
-        llPoint.removeAllViews();//因为访问网络读取缓存这个方法会被执行2此，所以需要要移除以前的view
-        View view = null;
-        for (int i = 0; i < topNewsList.size(); i++) {
-            view = new View(mActivity);
-            view.setBackgroundResource(R.drawable.point_seclect);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(15, 15);
-            if (i != 0) {
-                params.leftMargin = 15;
+            moreUrl = topNewsBean.getData().getMore();
+            if (TextUtils.isEmpty(moreUrl)) {
+                moreUrl = null;
+            }else {
+                moreUrl = ConstantUtils.CONNECTURL+moreUrl;
             }
-            view.setEnabled(false);
-            view.setLayoutParams(params);
-            llPoint.addView(view);
+            //初始化顶部新闻的Viewpager数据
+
+            //初始化Viewpager数据
+            TopNewsTabAdapter topNewsTabAdapter = new TopNewsTabAdapter();
+//        给ViewPager设置数据
+            hvp.setAdapter(topNewsTabAdapter);
+            hvp.setOnPageChangeListener(this);
+
+            //初始化文字和点
+
+            llPoint.removeAllViews();//因为访问网络读取缓存这个方法会被执行2此，所以需要要移除以前的view
+            View view = null;
+            for (int i = 0; i < topNewsList.size(); i++) {
+                view = new View(mActivity);
+                view.setBackgroundResource(R.drawable.point_seclect);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(15, 15);
+                if (i != 0) {
+                    params.leftMargin = 15;
+                }
+                view.setEnabled(false);
+                view.setLayoutParams(params);
+                llPoint.addView(view);
+            }
+            //初始化第一个点和文字
+            firstDescription = 0;
+            tvTopNewsDes.setText(topNewsList.get(firstDescription).getTitle());
+            llPoint.getChildAt(firstDescription).setEnabled(true);
+
+
+            //初始化listview数据
+            newsItem = topNewsBean.getData().getNews();
+            listNewsAdapter = new ListNewsAdapter();
+            listNews.setAdapter(listNewsAdapter);
+        }else {
+            isLoadMore = false;
+            List<TopNewsBean.DataBean.NewsBean> moreNewsItem = topNewsBean.getData().getNews();
+            newsItem.addAll(moreNewsItem);
+            listNewsAdapter.notifyDataSetChanged();
         }
-        //初始化第一个点和文字
-        firstDescription = 0;
-        tvTopNewsDes.setText(topNewsList.get(firstDescription).getTitle());
-        llPoint.getChildAt(firstDescription).setEnabled(true);
-
-
-        //初始化listview数据
-        newsItem = topNewsBean.getData().getNews();
-        ListNewsAdapter listNewsAdapter = new ListNewsAdapter();
-        listNews.setAdapter(listNewsAdapter);
     }
 
 
@@ -175,6 +284,8 @@ public class TabPager extends LeftMenuBasePager implements ViewPager.OnPageChang
     public void onPageScrollStateChanged(int state) {
 
     }
+
+
 
     class TopNewsTabAdapter extends PagerAdapter {
 
@@ -239,9 +350,6 @@ public class TabPager extends LeftMenuBasePager implements ViewPager.OnPageChang
             if (convertView == null) {
                 convertView = View.inflate(mActivity, R.layout.listnews_item, null);
                 viewHolder = new ViewHolder(convertView);
-//                viewHolder.ivListNews = (ImageView) convertView.findViewById(R.id.iv_list_news);
-//                viewHolder.tvListNews = (TextView) convertView.findViewById(R.id.tv_list_news);
-//                viewHolder.tvListDate = (TextView) convertView.findViewById(R.id.tv_list_date);
                 convertView.setTag(viewHolder);
             }else {
                 viewHolder = (ViewHolder) convertView.getTag();
@@ -249,6 +357,17 @@ public class TabPager extends LeftMenuBasePager implements ViewPager.OnPageChang
             TopNewsBean.DataBean.NewsBean newsBean = newsItem.get(position);
             viewHolder.tvListNews.setText(newsBean.getTitle());
             viewHolder.tvListDate.setText(newsBean.getPubdate());
+
+            // 判断当前是否是已读的新闻
+            String readableIDArray = CacheUtils.getString(mActivity, READABLE_NEWS_ID_ARRAY_KEY, null);
+            // TODO: 16/5/27
+            if(!TextUtils.isEmpty(readableIDArray)
+                    && readableIDArray.contains(newsBean.getId()+"")) {
+                viewHolder.tvListNews.setTextColor(Color.GRAY);
+            } else {
+                viewHolder.tvListNews.setTextColor(Color.BLACK);
+            }
+
             //设置默认图片
             viewHolder.ivListNews.setBackgroundResource(R.drawable.listnews_default_bg);
             bitmapUtils.display(viewHolder.ivListNews,newsBean.getListimage());

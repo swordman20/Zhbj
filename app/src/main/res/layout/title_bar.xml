@@ -12,6 +12,16 @@
         android:layout_margin="10dp"
         android:visibility="gone"
         android:layout_centerVertical="true"/>
+    <ImageButton
+        android:id="@+id/ib_finish"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/finsh"
+        android:background="@android:color/transparent"
+        android:visibility="gone"
+        android:layout_margin="10dp"
+        android:layout_centerVertical="true"/>
+
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
@@ -20,4 +30,31 @@
         android:textColor="#FFFFFF"
         android:textSize="18sp"
         android:text="默认标题"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerInParent="true">
+        <ImageButton
+            android:id="@+id/ib_textsize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:visibility="gone"
+            android:layout_gravity="center_vertical"
+            android:src="@mipmap/icon_textsize"
+            android:background="@android:color/transparent"
+            android:layout_centerVertical="true"/>
+        <ImageButton
+            android:id="@+id/ib_share"
+            android:padding="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/icon_share"
+            android:background="@android:color/transparent"
+            android:layout_margin="10dp"
+            android:visibility="gone"
+            android:layout_centerVertical="true"/>
+    </LinearLayout>
 </RelativeLayout>

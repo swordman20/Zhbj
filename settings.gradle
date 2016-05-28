@@ -1,3 +1,2 @@
 include ':app', 'SlidingMean_library'
 include ':ViewPagerIndicator_library'
-include ':Viewpager_sample'

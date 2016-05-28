@@ -36,7 +36,7 @@ public class MainActivity extends SlidingFragmentActivity {
         //如果是手机有虚拟按键，将自动不被覆盖。
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         //透明状态栏
-//        getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         setContentView(R.layout.activity_main);
         //获取slidingMean管理器
         setBehindContentView(R.layout.left_menu);

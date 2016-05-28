@@ -27,6 +27,7 @@ public class SmartServicePager extends BasePager {
         super.initData();
         Log.d(TAG, "智慧服务 加载数据了 ");
         mTextViewTitle.setText("智慧服务");
+        mImageButtionLeftMenu.setVisibility(View.VISIBLE);
         mFrameLayoutContent.removeAllViews();
         View view = new BlankPager(mActivity).blankView();
         mFrameLayoutContent.addView(view);

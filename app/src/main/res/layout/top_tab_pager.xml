@@ -3,49 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="@drawable/default_bg"
-        android:orientation="vertical">
-        <com.example.xwf.zhbj.view.HorizontalViewPager
-            android:id="@+id/hvp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"></com.example.xwf.zhbj.view.HorizontalViewPager>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:gravity="center_vertical"
-            android:layout_height="25dp"
-            android:background="#33000000">
-            <TextView
-                android:id="@+id/tv_top_news_des"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:textColor="#FFFF"
-                android:textSize="14sp"
-                android:text="默认描述信息"/>
-            <LinearLayout
-                android:id="@+id/ll_point"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:orientation="horizontal"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="10dp"
-                ></LinearLayout>
-        </RelativeLayout>
-    </RelativeLayout>
-
-    <ListView
+    <com.example.xwf.zhbj.view.CustomLIstView
         android:id="@+id/list_news"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:cacheColorHint="@android:color/transparent"
-        android:dividerHeight="0dp"
-        android:divider="@null" ></ListView>
+        android:divider="@null" ></com.example.xwf.zhbj.view.CustomLIstView>
 </LinearLayout>
