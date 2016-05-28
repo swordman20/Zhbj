@@ -5,10 +5,13 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -74,6 +77,7 @@ public class TabPager extends LeftMenuBasePager implements ViewPager.OnPageChang
     // 已读新闻的id数组
     private final String READABLE_NEWS_ID_ARRAY_KEY = "readable_news_id_array_key";
     public TopNewsBean.DataBean.NewsBean newsBeanItem;
+    public MyHandle myHandle;
 
 
     public TabPager(Activity activity, NewsCenterBean.NewsCenterMenu.NewsMenuTab newsMenuTab) {
@@ -238,6 +242,7 @@ public class TabPager extends LeftMenuBasePager implements ViewPager.OnPageChang
                 view.setEnabled(false);
                 view.setLayoutParams(params);
                 llPoint.addView(view);
+
             }
             //初始化第一个点和文字
             firstDescription = 0;
@@ -249,11 +254,42 @@ public class TabPager extends LeftMenuBasePager implements ViewPager.OnPageChang
             newsItem = topNewsBean.getData().getNews();
             listNewsAdapter = new ListNewsAdapter();
             listNews.setAdapter(listNewsAdapter);
+
+
+            // TODO: 16/5/28    给Viewpager设置自动滑动
+            //因为该方法会执行2次，所以需要清空一次
+            if (myHandle==null){
+                myHandle = new MyHandle();
+            }else {
+                myHandle.removeCallbacksAndMessages(null);
+            }
+            myHandle.postDelayed(new MyRunnable(),4000);
         }else {
             isLoadMore = false;
             List<TopNewsBean.DataBean.NewsBean> moreNewsItem = topNewsBean.getData().getNews();
             newsItem.addAll(moreNewsItem);
             listNewsAdapter.notifyDataSetChanged();
+        }
+    }
+
+    class MyHandle extends Handler{
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            //用于处理消息
+            int newCurrentItem = (hvp.getCurrentItem() + 1)%topNewsList.size();
+            hvp.setCurrentItem(newCurrentItem);
+            //消息处理完在重新发送，类似递归
+            myHandle.postDelayed(new MyRunnable(),4000);
+        }
+    }
+
+    class MyRunnable implements Runnable{
+
+        @Override
+        public void run() {
+            //发一条空的消息
+            myHandle.sendEmptyMessage(0);
         }
     }
 
@@ -302,6 +338,9 @@ public class TabPager extends LeftMenuBasePager implements ViewPager.OnPageChang
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             ImageView imageView = new ImageView(mActivity);
+            
+            //给imageview设置事件
+
             //设置默认图片和背景拉伸
             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
             imageView.setBackgroundResource(R.drawable.default_bg);

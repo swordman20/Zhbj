@@ -114,7 +114,6 @@ public class NewsCenterPager extends BasePager{
         leftMenuBasePagerlist.add(new PhotosPager(mActivity));
         leftMenuBasePagerlist.add(new HudongPager(mActivity));
 
-
         //把获取到的左侧菜单数据传给LeftMenuFragment(先发送数据)
         sendLeftMenuFormlist(leftMenuList);
 
@@ -135,6 +134,19 @@ public class NewsCenterPager extends BasePager{
         mFrameLayoutContent.addView(view);
         //初始化数据
         leftMenuBasePager.initData();
+
+        if (position == 2){
+            mImageButtionSwitchView.setVisibility(View.VISIBLE);
+            mImageButtionSwitchView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PhotosPager photosPager = (PhotosPager) leftMenuBasePagerlist.get(2);
+                    mImageButtionSwitchView.setImageResource(R.mipmap.icon_pic_list_type);
+                    photosPager.switchView(mImageButtionSwitchView);
+                }
+            });
+        }
+
     }
 
     /**

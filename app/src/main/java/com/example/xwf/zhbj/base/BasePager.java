@@ -26,6 +26,8 @@ public class BasePager {
 
     @Bind(R.id.ib_left_menu)
     public ImageButton mImageButtionLeftMenu;
+    @Bind(R.id.ib_switch_view)
+    public ImageButton mImageButtionSwitchView;
     @Bind(R.id.tv_title)
     public TextView mTextViewTitle;
     public @Bind(R.id.fl_content)
