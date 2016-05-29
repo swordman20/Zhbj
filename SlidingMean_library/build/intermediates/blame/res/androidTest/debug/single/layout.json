@@ -1,5 +1,9 @@
 [
     {
+        "merged": "/Users/xwf/Desktop/Zhbj/SlidingMean_library/build/intermediates/res/merged/androidTest/debug/layout/slidingmenumain.xml",
+        "source": "/Users/xwf/Desktop/Zhbj/SlidingMean_library/build/intermediates/bundles/debug/res/layout/slidingmenumain.xml"
+    },
+    {
         "merged": "/Users/xwf/Documents/Developer/Workspace/AndroidStu/Zhbj/SlidingMean_library/build/intermediates/res/merged/androidTest/debug/layout/slidingmenumain.xml",
         "source": "/Users/xwf/Documents/Developer/Workspace/AndroidStu/Zhbj/SlidingMean_library/build/intermediates/bundles/debug/res/layout/slidingmenumain.xml"
     }

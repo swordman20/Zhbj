@@ -145,6 +145,8 @@ public class NewsCenterPager extends BasePager{
                     photosPager.switchView(mImageButtionSwitchView);
                 }
             });
+        }else {
+            mImageButtionSwitchView.setVisibility(View.GONE);
         }
 
     }

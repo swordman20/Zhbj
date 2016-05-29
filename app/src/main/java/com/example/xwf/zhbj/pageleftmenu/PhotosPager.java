@@ -116,7 +116,7 @@ public class PhotosPager extends LeftMenuBasePager {
         if (isSingleColumns) {
             llPhotos.setVisibility(View.VISIBLE);
             gvPhoto.setVisibility(View.GONE);
-            gvPhoto.setAdapter(new PhotoAdapter());
+            llPhotos.setAdapter(new PhotoAdapter());
             isSingleColumns =false;
             ib.setImageResource(R.mipmap.icon_pic_list_type);
         }else {
@@ -124,7 +124,7 @@ public class PhotosPager extends LeftMenuBasePager {
             gvPhoto.setVisibility(View.VISIBLE);
             gvPhoto.setAdapter(new PhotoAdapter());
             isSingleColumns =true;
-            ib.setImageResource(R.mipmap.icon_pic_list_type);
+            ib.setImageResource(R.mipmap.icon_pic_grid_type);
         }
 
     }
